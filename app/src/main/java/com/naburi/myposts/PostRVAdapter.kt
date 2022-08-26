@@ -1,12 +1,13 @@
 package com.naburi.myposts
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.naburi.myposts.databinding.PostListItemBinding
 
-class PostRVAdapter (var context: Context, var postList: List<Post>): RecyclerView.Adapter<PostRVAdapter.PostViewHolder>(){
+class PostRVAdapter (var postList: List<Post>): RecyclerView.Adapter<PostRVAdapter.PostViewHolder>(){
 
 
     class PostViewHolder(val binding: PostListItemBinding): RecyclerView.ViewHolder(binding.root)
@@ -23,6 +24,12 @@ class PostRVAdapter (var context: Context, var postList: List<Post>): RecyclerVi
         holder.binding.tvId.text = currentPosts.id.toString()
         holder.binding.tvTitle.text = currentPosts.title
         holder.binding.tvBody.text = currentPosts.body
+        val context = holder.itemView.context
+        holder.binding.cdPost.setOnClickListener {
+            val intent = Intent(context, CommentsActivity::class.java)
+            intent.putExtra("POST_ID", currentPosts.id)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount(): Int {

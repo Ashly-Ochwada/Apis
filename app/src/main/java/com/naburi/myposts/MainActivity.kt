@@ -33,9 +33,16 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(call: Call<List<Post>>, t: Throwable) {
+                Toast.makeText(baseContext,t.message, Toast.LENGTH_LONG).show()
 
             }
 
         })
     }
+//    fun displayPosts(postsList: List<Post>){
+//        binding.rvPost.layoutManager = LinearLayoutManager(this)
+//        val postAdapter = PostRVAdapter(postsList)
+//        binding.rvPost
+
+
 }
