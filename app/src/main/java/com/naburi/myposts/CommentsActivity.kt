@@ -2,7 +2,9 @@ package com.naburi.myposts
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.naburi.myposts.databinding.ActivityCommentsBinding
 import com.naburi.myposts.databinding.ActivityMainBinding
 import retrofit2.Call
@@ -41,5 +43,32 @@ class CommentsActivity : AppCompatActivity() {
                Toast.makeText(baseContext, t.message, Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+
+    fun fetchComments(){
+        var apiClient=ApiClient.buildApiClient(ApiInterface::class.java)
+        var request=apiClient.getComments(postId)
+
+        request.enqueue(object :Callback<List<Comment>>{
+            override fun onResponse(call: Call<List<Comment>>, response: Response<List<Comment>>) {
+                var comment=response.body()
+                if (response.isSuccessful){
+                    Log.d("TAG",comment.toString())
+                    comment?.let { displayComments(comment) }
+                }
+
+            }
+
+            override fun onFailure(call: Call<List<Comment>>, t: Throwable) {
+
+            }
+        })
+    }
+    fun displayComments(comment: List<Comment>){
+        var adapter=CommentRVAdapter(comment)
+        binding.rvComments.layoutManager= LinearLayoutManager(this)
+        binding.rvComments.adapter=adapter
+
     }
 }
